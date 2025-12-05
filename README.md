@@ -1,277 +1,405 @@
+好的，我会用 **最清晰、适合你们团队 Game Jam 的方式**，把你的所有问题（1～10）全部系统性回答，并告诉你们每个人现在应该做什么、怎么做、避免踩坑。
 
-# 🐟 夹心青鱼罐头 — GameJam 团队协作指南（零基础版）
-
-本仓库用于 **2024-12-19 至 2024-12-24 GameJam**。
-
-团队共 4 人：
-
-* **程序 1**
-* **程序 2**
-* **美术**
-* **（待分配）**
-
-游戏类型：**剧情 / 解谜**
-美术风格：**手绘（可能有少量像素）**
-
-本指南专为**零基础**成员准备。
-只要按照这里的步骤做，就不会弄坏项目，也不会 Git 冲突。
+因为你们时间有限、经验有限，所以我会用 **最低门槛但最高效率** 的方式教你们推进项目。
 
 ---
 
-# 📁 1. 如何打开项目
+# ⭐总览（你们团队现在应该这样分工）
 
-## ✔ 方法 A：用 VS Code 打开（推荐）
+**程序（你 + 队友）：**
 
-1. 打开 VS Code
-2. 左上角 **File → Open Folder...**
-3. 选择项目文件夹：
+* 建 Unity 项目结构（Art/ Audio/ Scenes/ Scripts/ UI/ Prefabs/）
+* 导入美术素材、转成 Sprite
+* 做开场图点击切换系统
+* 做场景切换
+* 加 ESC 退出
+* 做黑屏 UI、文字
+* 做音效播放
 
-```
-D:\UnityProjects\FishCanGameJam25\WithinTheCan
-```
+**美术：**
 
----
+* 出开场图片（尽量小于 2MB）
+* 输出 PNG（透明）或 JPG（不透明）
+* 保持统一尺寸，如 **1920×1080**
 
-## ✔ 方法 B：在资源管理器中右键打开
+**策划/写手（你也可以兼任）：**
 
-在文件管理器中找到：
-
-```
-WithinTheCan
-```
-
-右键 → **Open with VS Code**
-
----
-
-## ✔ 方法 C：命令行打开
-
-在终端输入：
-
-```
-code D:\UnityProjects\FishCanGameJam25\WithinTheCan
-```
+* 确定主要玩法
+* 确定游戏流程
+* 确定界面文字、旁白、提示方式
+* 美术风格统一（怪诞可爱 + 微恐）
 
 ---
 
-# 🎮 2. 如何用 Unity 打开项目
-
-1. 打开 Unity Hub
-2. 点击 **Open**
-3. 选择项目文件夹
-
-Unity 会自动识别这是一个 Unity 项目。
+# 🎯 **一问一答（1～10 全解决）**
 
 ---
 
-# 🐙 3. GitHub 工作规则（不要跳过）
+# **1、UI 用的 icon 是什么？**
 
-## 🔥 最重要的一点：
+在 Unity 中：
 
-**不要直接修改 main 分支！**
+* **Icon = 小图标/按钮图形**
+* 常用于 UI 按钮、血条图标、物品图标
+* 一般放在：
+  `Assets/UI/Icons/`
 
-我们使用 3 层结构：
-
-```
-main  ← 最后一天才动
-dev   ← 所有人共同合并的分支
-feature/你的功能名 ← 你自己的工作区
-```
+这些通常是 PNG，透明背景。
 
 ---
 
-# 🌿 4. 第一次克隆项目（队友必看）
+# **2、你有开场 JPG，要转成 Sprite：怎么做？**
 
-队友第一次拿项目：
+步骤：
 
-```bash
-git clone https://github.com/bywhdzrngly/tuna-gamejam.git
-cd tuna-gamejam
-git checkout dev
-```
+1. 把 JPG 拖进 `Assets/Art/`
+2. 点选图片，在 Inspector 中：
 
-如果打开 Unity 看到空白场景，不要慌 → 打开 `Assets/Scenes`。
+   * **Texture Type → Sprite (2D and UI)**
+   * Apply
 
----
-
-# 🌱 5. 每次开始工作前
-
-每天工作开始时：
-
-```bash
-git checkout dev
-git pull
-git checkout -b feature/你的名字-今天的功能
-```
-
-例子：
-
-```
-git checkout -b feature/jiaoyi-dialogue-system
-```
+完成！现在可被 Unity 当作 Sprite 使用。
 
 ---
 
-# ✍️ 6. 每次提交（commit）的写法
+# **3、你想做的开场流程（点击换图 → 动画 → 黑屏 → 显示规则）**
 
-做完一小块内容就提交一次：
-
-```bash
-git add .
-git commit -m "feat: 加入对话框基础功能"
-git push origin feature/你的分支名
-```
-
-提交消息格式推荐：
-
-```
-feat: 新功能
-fix: 修 bug
-asset: 添加美术素材
-refactor: 重构
-```
-
-例子：
-
-```
-asset: add player idle sprites
-```
+下面是我为你们设计的最简单稳健方案 👇
 
 ---
 
-# 🔀 7. 如何合并功能（Pull Request）
+## **（1）创建一个 Image 来显示图片**
 
-1. 打开 GitHub 仓库
-2. 点击 "Compare & Pull Request"
-3. 目标分支请选择：
+在 **Canvas** 下创建：
 
 ```
-base: dev
-compare: feature/你的功能名
+Canvas
+ └── OpeningImage (Image)
 ```
 
-4. 点击 Create Pull Request
-5. 程序员队友互相检查后再 merge
-
-**不要直接把 feature 分支合到 dev！**
-一定要通过 GitHub 的 PR。
+将第一张开场 Sprite 放进去。
 
 ---
 
-# 🎨 8. 美术同学流程（超简单）
+## **（2）写一个脚本：点击切换图片**
 
-### ✔ 1. 输出 PNG（透明背景）
+新建脚本放：
+`Assets/Scripts/UI/OpeningSequence.cs`
 
-格式：**PNG**
-大小可以随意（512, 1024 最常见）
+下面是你可以直接复制的脚本（已为你写好）：
 
-### ✔ 2. 按文件夹放好（最重要）
+```csharp
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-放在：
+public class OpeningSequence : MonoBehaviour
+{
+    public Image displayImage;      // 开场图显示窗口
+    public Sprite[] openingSprites; // 你的一堆jpg
+    public Animator animator;       // 用于播放过场动画
+    public string nextSceneName;    // 最后进入的场景名字
+    
+    int index = 0;
 
+    void Start()
+    {
+        displayImage.sprite = openingSprites[0];
+    }
+
+    public void OnClick()
+    {
+        index++;
+
+        // 图片还没播完
+        if (index < openingSprites.Length)
+        {
+            displayImage.sprite = openingSprites[index];
+            return;
+        }
+
+        // 图片播完 → 播动画
+        animator.SetTrigger("PlayEndingAnimation");
+    }
+
+    // 动画结束时 Unity 动画事件调用
+    public void OnAnimationEnd()
+    {
+        SceneManager.LoadScene(nextSceneName);
+    }
+}
 ```
-Assets/Art/Characters
-Assets/Art/UI
-Assets/Art/Backgrounds
-```
 
-不要把东西丢到 Assets 根目录。
-
-### ✔ 3. Unity 设置（一次就懂）
-
-在 Unity 选中图片 → Inspector：
-
-* Texture Type：**Sprite (2D and UI)**
-* Filter Mode：**Point（像素）或 Bilinear（普通）**
-* Compression：**None（避免糊）**
+并在 Canvas 上挂上这个脚本。
 
 ---
 
-# 🛠 9. 程序员目录（按功能分类）
+## **（3）最终进入“黑屏 + 游戏规则页面”**
+
+你可以建立一个新 Scene：
+
+```
+Scenes/OpeningRule.unity
+```
+
+背景纯黑 + 一个 Text Mesh Pro 显示规则 + 一个开始按钮（或立即进入游戏）。
+
+---
+
+# 🎬 动画怎么做？
+
+① 在 Canvas 下再加一个 Fullscreen Image
+② 用 Animator 做淡出动画（Alpha 从 0 → 1）
+③ 在动画最后加一个 **Animation Event** → 调用 `OnAnimationEnd()`
+
+---
+
+# **4、ESC 退出游戏（C# 代码）**
+
+创建脚本：
+
+`Assets/Scripts/System/EscapeQuit.cs`
+
+```csharp
+using UnityEngine;
+
+public class EscapeQuit : MonoBehaviour
+{
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+}
+```
+
+挂在任意对象上即可（建议挂在 GameSystem 下）。
+
+---
+
+# **5、Assets 里有很多脚本，我们是否要管理？**
+
+是的，你们要做一个非常清晰的结构：
 
 ```
 Assets/
-│
-├── Art/
-├── Audio/
-├── Scenes/
-│   ├── MainMenu.unity
-│   ├── Game.unity
-│   └── Ending.unity
-│
-├── Scripts/
-│   ├── Player/
-│   ├── Dialogue/
-│   ├── Interactions/
-│   ├── UI/
-│   └── Puzzle/
-│
-├── Prefabs/
-└── Resources/
+    Art/
+    Audio/
+    Prefabs/
+    Scenes/
+    Scripts/
+        UI/
+        System/
+        Gameplay/
+        Utils/
+    UI/
 ```
 
-按文件夹分类，避免每个人乱放文件。
+这样：
+
+* **UI相关**脚本 → UI/
+* **系统/全局**脚本（ESC退出等）→ System/
+* **游戏逻辑**→ Gameplay/
+* **工具类** → Utils/
+
+你们以后会感谢现在的整理。
 
 ---
 
-# 📅 10. 每天团队协作节奏（照这个做不会冲突）
+# **6、教你场景切换 / 导入图片 / 放音效**
 
-## 🟦 1）早上/开始前
-
-每个人说今天做什么
-然后输入：
-
-```
-git checkout dev
-git pull
-git checkout -b feature/xxx
-```
+非常简单，我用最短方式教你。
 
 ---
 
-## 🟨 2）中午/下午
+## 🎮 **场景切换**
 
-完成一个功能就 push：
+```csharp
+using UnityEngine.SceneManagement;
 
+SceneManager.LoadScene("SceneName");
 ```
-git add .
-git commit -m "feat: 完成功能"
-git push
-```
+
+记得在：
+**File → Build Settings → Add Open Scenes**
+把所有场景加入。
 
 ---
 
-## 🟩 3）晚上
+## 🖼️ **导入图片为 Sprite**
 
-提交 Pull Request → 合并到 dev
-每个人拉取最新 dev
+拖进 `Assets/Art/` → 选中 → Inspector：
+
+* Texture Type: **Sprite**
+* Apply
 
 ---
 
-# 🧯 11. 如果 Git 出现红字怎么办？
+## 🔊 **播放音效**
 
-第一步永远是：
+把音效 wav/mp3 拖进 `Assets/Audio/`
+
+创建脚本：
+
+```csharp
+using UnityEngine;
+
+public class SoundPlayer : MonoBehaviour
+{
+    public AudioSource audioSource;
+    
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+}
+```
+
+挂一个 AudioSource 就能播。
+
+---
+
+# **（你想要 B站教程）给你最适合 Unity 新手的 3 个 playlist：**
+
+**Unity 初学者必看：**
+[https://www.bilibili.com/video/BV1BT4y1S7P1](https://www.bilibili.com/video/BV1BT4y1S7P1)
+
+**场景切换 & UI 入门：**
+[https://www.bilibili.com/video/BV1hE411q7P9](https://www.bilibili.com/video/BV1hE411q7P9)
+
+**音效与 AudioSource：**
+[https://www.bilibili.com/video/BV1hK4y1A7Gt](https://www.bilibili.com/video/BV1hK4y1A7Gt)
+
+这些是非常靠谱的 Unity 教育UP。
+
+---
+
+# **7、Assets 里那些文件夹需要“右键创建”，还是资源管理器创建？**
+
+直接在 Unity 中创建即可：
+
+### ✔ 最稳的方式
+
+在 **Unity 的 Project 窗口（左下）**里：
+
+Right Click → Create → Folder
+
+Unity 会自动处理 meta 文件
+否则你在资源管理器创建可能会出现 meta 丢失的问题（容易报错）。
+
+---
+
+# **7.5、你们游戏风格：怪诞可爱 + 微恐**
+
+这个风格 **非常适合点选/叙事解谜**。
+美术可以参考：
+
+* 棉花糖诡异风
+* 锈湖 + 可爱Q版
+* 小丑色彩过饱和
+* 介于“童话”和“噩梦”之间
+
+你们风格选得特别好，JP 游戏、独立游戏很常用。
+
+---
+
+# **8、游戏类型判断**
+
+你们团队配置适合：
+
+## ⭐最推荐：
+
+### **叙事 + 解谜（Rusty Lake 风）+ 点选操作 Point & Click**
+
+* 美术强 → 非常加分
+* 程序相对简单 → 几天就能做完
+* 可做大量贴图/机关 → 加分
+* 和你喜欢的锈湖系列一致
+
+---
+
+## 你提到的类型分析
+
+### a. Platformer 做成小关卡
+
+👍 可以，但不要做主玩法（太花时间）。
+可以作为“电脑里小游戏”的形式出现。
+
+### b. 解密游戏
+
+✔ 完全适合你们
+✔ 美术驱动
+✔ 内容自由度大
+
+### c. Narrative/互动短篇
+
+✔ 最适合 GameJam + 美术强团队
+✔ 节省大量程序时间
+
+---
+
+# **9、开始界面背景用纯黑 → 正确，不用画！**
+
+UI 背景黑色：
+
+* 简洁
+* 有“微恐”氛围
+* 节省美术时间
+
+非常好的决定。
+
+---
+
+# **10、美术的图片放哪里？要多大？**
+
+## ✔ 路径
+
+让美术把素材放到：
 
 ```
-git status
+Assets/Art/
 ```
 
-你把输出截图发给队友（或问我），不要乱按。
+再按需求细分：
+
+```
+Assets/Art/Opening/
+Assets/Art/Characters/
+Assets/Art/Backgrounds/
+```
+
+## ✔ 文件大小建议
+
+美术导出设置：
+
+| 类型    | 推荐尺寸      | 格式        | 说明     |
+| ----- | --------- | --------- | ------ |
+| 开场大图  | 1920×1080 | JPG 或 PNG | JPG 更轻 |
+| UI 图标 | 256×256   | PNG       | 小体积    |
+| 场景背景图 | 1920×1080 | JPG       | 轻量化    |
+| 角色立绘  | 1000×1500 | PNG       | 透明背景   |
+
+### 📌 单张图片最好 **< 2MB**
+
+你们现在十几 MB 的 JPG 绝对太大，会：
+
+* 卡顿
+* 打包巨大
+* 加载慢
+
+你们必须压图（我可以教美术怎么压）。
 
 ---
 
-# 🎁 12. GameJam 后期（12.22–12.24）规则
+# 🎉 如果你愿意，我可以直接给你们：
 
-* 12.22 开始锁 main
-* 所有内容先合到 dev
-* dev 测试成功后 → 最后一晚合到 main
-* main 就是提交版
+* 完整的 **游戏开场系统 prefab**
+* 完整的 **项目文件夹结构模板**
+* 完整的 **解谜游戏框架（Rusty Lake 风）**
+* 你们团队的 **美术规范文档**
+* 你们程序员的 **任务表 + 教程**
 
----
-
-# 🎉 你们已经准备好了！
-
-按这个 README 做，你们小队不会出现 Git 自爆、文件消失、互相覆盖等问题。
-大家都能清晰知道每天该做什么。
-
+只要你说：“给我们项目模板”，我马上发。
 
