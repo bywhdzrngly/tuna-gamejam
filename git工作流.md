@@ -136,23 +136,6 @@ git pull origin dev
 
 ---
 
-# 3) UI 是什么？简单解释（给完全没做过的队友）
-
-* **UI（User Interface）用户界面**：玩家和游戏交互的所有界面元素，例如菜单、按钮、对话框、血条、提示文字等。
-* Unity 里主要概念：
-
-  * **Canvas**：所有 UI 的根（画布）
-  * **RectTransform**：UI 元素位置/大小的组件（替代 Transform）
-  * **Image**：用来显示图片（背景、按钮图）
-  * **Text / TextMeshPro**：显示文字
-  * **Button**：带可点击功能的 UI（有 OnClick 事件）
-  * **EventSystem**：负责接收鼠标/触摸等输入（每个场景必有）
-  * **CanvasScaler**：负责适配不同分辨率（常设为 Scale With Screen Size）
-
-**举例**：做开始界面时，你会建一个 Canvas，在 Canvas 下放一个 Image（背景）和一个 Button（Start）。Button 的 OnClick 可以连到你写的脚本方法启动游戏。
-
----
-
 
 
 
